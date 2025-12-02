@@ -1,0 +1,434 @@
+# ===============================================
+# ETAPA 5: CAPA DE PRESENTACIÓN - COMPLETADA
+# ===============================================
+# Fecha: Diciembre 2025
+# Proyecto: Wallet - Billetera Digital
+# ===============================================
+
+## 1. RESUMEN EJECUTIVO
+La Etapa 5 implementa la interfaz de usuario por consola con menús interactivos,
+permitiendo a los usuarios realizar todas las operaciones del sistema de forma intuitiva.
+
+## 2. COMPONENTES IMPLEMENTADOS
+
+### 2.1 UTILIDADES DE CONSOLA
+ConsoleUtils.java:
+├── Entrada de Datos:
+│   ├── readLine(prompt) - Lee texto
+│   ├── readInt(prompt) - Lee números enteros
+│   ├── readIntInRange(min, max) - Lee número en rango
+│   ├── readBigDecimal(prompt) - Lee montos
+│   ├── readConfirmation(prompt) - Lee S/N
+│   └── pause() - Pausa hasta Enter
+│
+├── Salida Formateada:
+│   ├── printHeader(titulo) - Encabezados
+│   ├── printSuccess(mensaje) - Mensajes exitosos
+│   ├── printError(mensaje) - Mensajes de error
+│   ├── printWarning(mensaje) - Advertencias
+│   ├── printInfo(mensaje) - Información
+│   ├── printSeparator() - Líneas separadoras
+│   └── printLine() - Línea en blanco
+│
+├── Validación:
+│   ├── isNotEmpty(string) - Valida no vacío
+│   ├── isValidEmail(email) - Valida formato email
+│   └── Validación automática en lectura
+│
+└── Formateo:
+    ├── formatMoney(BigDecimal) - Formatea moneda ($XX.XX)
+    └── clearScreen() - Limpia pantalla (simulado)
+
+### 2.2 CONTROLADORES (MVC Pattern)
+Actúan como intermediarios entre la UI y los servicios.
+
+UsuarioController.java:
+├── registrarUsuario()
+│   ├── Solicita: nombre, apellido, email, tipo doc, número
+│   ├── Valida: campos requeridos, formato email
+│   ├── Confirma: muestra resumen antes de guardar
+│   └── Crea: invoca UsuarioService.crearUsuario()
+│
+├── buscarPorEmail()
+│   ├── Solicita email
+│   ├── Busca en servicio
+│   └── Muestra resultado o mensaje de no encontrado
+│
+├── listarUsuarios()
+│   └── Muestra lista completa con detalles
+│
+└── mostrarUsuario(dto)
+    └── Formatea y muestra detalles de usuario
+
+CuentaController.java:
+├── crearCuenta(usuarioId)
+│   ├── Recibe ID de usuario
+│   ├── Crea cuenta vía CuentaService
+│   └── Muestra número de cuenta y saldo inicial
+│
+├── depositar()
+│   ├── Solicita: ID cuenta, monto, descripción
+│   ├── Valida: monto > 0
+│   ├── Confirma operación
+│   └── Ejecuta y muestra resultado
+│
+├── retirar()
+│   ├── Solicita: ID cuenta, monto, descripción
+│   ├── Valida: monto > 0, saldo suficiente
+│   ├── Confirma operación
+│   └── Ejecuta y muestra resultado
+│
+├── consultarSaldo()
+│   ├── Solicita número de cuenta
+│   └── Muestra saldo actual y estado
+│
+├── listarCuentasUsuario(usuarioId)
+│   └── Lista todas las cuentas del usuario
+│
+└── buscarPorNumero()
+    └── Busca y muestra cuenta por número
+
+TransaccionController.java:
+├── transferir()
+│   ├── Solicita: ID origen, ID destino, monto, descripción
+│   ├── Muestra resumen
+│   ├── Confirma operación
+│   └── Ejecuta transferencia (2 transacciones)
+│
+├── consultarHistorial()
+│   ├── Solicita número de cuenta
+│   ├── Obtiene todas las transacciones
+│   └── Muestra lista con fecha, tipo, monto, descripción
+│
+└── consultarUltimas()
+    ├── Solicita ID cuenta y límite (1-50)
+    └── Muestra últimas N transacciones
+
+### 2.3 MENÚS INTERACTIVOS
+
+MenuPrincipal.java:
+├── Estructura:
+│   ├── 1. Gestión de Usuarios → MenuUsuarios
+│   ├── 2. Gestión de Cuentas → MenuCuentas
+│   ├── 3. Transacciones → MenuTransacciones
+│   ├── 4. Consultas → Submenú de consultas
+│   └── 0. Salir
+│
+├── Funciones:
+│   ├── iniciar() - Inicia la aplicación
+│   ├── mostrarBienvenida() - Pantalla inicial
+│   ├── mostrarMenu() - Despliega opciones
+│   ├── procesarOpcion() - Maneja selección
+│   └── mostrarDespedida() - Pantalla de salida
+│
+└── Submenú Consultas:
+    ├── 1. Consultar Saldo
+    ├── 2. Ver Historial de Transacciones
+    ├── 3. Ver Últimas Transacciones
+    ├── 4. Buscar Usuario por Email
+    ├── 5. Buscar Cuenta por Número
+    └── 0. Volver
+
+MenuUsuarios.java:
+├── 1. Registrar Nuevo Usuario
+│   └── Opción: crear cuenta inmediatamente
+├── 2. Listar Usuarios Activos
+├── 3. Buscar Usuario por Email
+└── 0. Volver
+
+MenuCuentas.java:
+├── 1. Crear Nueva Cuenta
+├── 2. Depositar Dinero
+├── 3. Retirar Dinero
+├── 4. Consultar Saldo
+├── 5. Listar Cuentas de Usuario
+├── 6. Buscar Cuenta por Número
+└── 0. Volver
+
+MenuTransacciones.java:
+├── 1. Transferir Dinero
+├── 2. Ver Historial de Transacciones
+├── 3. Ver Últimas Transacciones
+└── 0. Volver
+
+## 3. FLUJOS DE USUARIO IMPLEMENTADOS
+
+### 3.1 Flujo Completo: Nuevo Usuario → Cuenta → Operaciones
+
+1. REGISTRO:
+   Usuario selecciona: Menu Principal → Usuarios → Registrar
+   Sistema solicita: Nombre, Apellido, Email, Documento
+   Sistema valida: Formato, duplicados
+   Usuario confirma: Revisa datos
+   Sistema crea: Guarda usuario, muestra ID
+
+2. CREAR CUENTA:
+   Usuario selecciona: Menu Principal → Cuentas → Crear
+   Sistema solicita: ID de usuario
+   Sistema crea: Genera número único, saldo inicial $0
+   Sistema muestra: Número de cuenta
+
+3. DEPOSITAR:
+   Usuario selecciona: Menu Principal → Cuentas → Depositar
+   Sistema solicita: ID cuenta, monto, descripción
+   Usuario confirma: Monto a depositar
+   Sistema ejecuta: Actualiza saldo, registra transacción
+   Sistema muestra: Confirmación
+
+4. TRANSFERIR:
+   Usuario selecciona: Menu Principal → Transacciones → Transferir
+   Sistema solicita: ID origen, ID destino, monto
+   Sistema muestra: Resumen de transferencia
+   Usuario confirma: Operación
+   Sistema ejecuta: 2 transacciones (salida + entrada)
+   Sistema muestra: Confirmación con IDs
+
+5. CONSULTAR:
+   Usuario selecciona: Menu Principal → Consultas → Historial
+   Sistema solicita: Número de cuenta
+   Sistema muestra: Lista completa de transacciones
+
+### 3.2 Manejo de Errores
+
+Validación en Entrada:
+- Campos vacíos: No permite continuar
+- Formato inválido: Solicita reingresar
+- Valores fuera de rango: Restringe opciones
+- Email inválido: Valida @ y .
+
+Errores de Negocio:
+- Usuario duplicado: Muestra mensaje específico
+- Saldo insuficiente: Informa monto disponible
+- Cuenta no encontrada: Sugiere verificar datos
+- Límite de cuentas: Informa restricción
+
+Errores del Sistema:
+- Captura excepciones generales
+- Muestra mensaje amigable
+- Registra en log para debugging
+- Permite volver al menú
+
+### 3.3 Confirmaciones
+
+Operaciones Críticas (requieren confirmación):
+✓ Registrar usuario
+✓ Depositar dinero
+✓ Retirar dinero
+✓ Transferir dinero
+
+Operaciones de Consulta (no requieren):
+- Listar usuarios/cuentas
+- Consultar saldo
+- Ver historial
+- Buscar por email/número
+
+## 4. ARQUITECTURA Y PATRONES
+
+### 4.1 MVC Pattern
+Model: DTOs (UsuarioDTO, CuentaDTO, TransaccionDTO)
+View: Menús + ConsoleUtils
+Controller: UsuarioController, CuentaController, TransaccionController
+
+Ventajas:
+- Separación de responsabilidades
+- Fácil cambio de UI (consola → GUI)
+- Controladores reutilizables
+- Testeable independientemente
+
+### 4.2 Command Pattern (implícito en menús)
+Cada opción del menú ejecuta un comando específico
+Facilita agregar/modificar opciones
+
+### 4.3 Flujo de Datos
+Usuario → Menú → Controller → Service → Use Case → Repository
+                      ↓
+                    DTO ← Mapper ← Entity ← Repository
+
+## 5. PRINCIPIOS APLICADOS
+
+### 5.1 SOLID
+[S] Single Responsibility:
+- ConsoleUtils: solo I/O de consola
+- Controllers: solo coordinación UI-Service
+- Menús: solo navegación
+
+[O] Open/Closed:
+- Fácil agregar nuevos menús
+- Nuevas validaciones sin modificar existentes
+
+[L] Liskov Substitution:
+- Cualquier implementación de menú intercambiable
+
+[I] Interface Segregation:
+- Métodos específicos por controlador
+
+[D] Dependency Inversion:
+- Controllers dependen de Services (abstracciones)
+
+### 5.2 4 Reglas del Diseño Simple
+1. ✅ Código claro y funcional
+2. ✅ Nombres descriptivos (registrarUsuario, consultarSaldo)
+3. ✅ Sin duplicación (utilidades centralizadas)
+4. ✅ Mínimo necesario (sin over-engineering)
+
+### 5.3 Buenas Prácticas
+✓ Validación temprana (fail-fast)
+✓ Mensajes de error descriptivos
+✓ Confirmaciones en operaciones críticas
+✓ Formateo consistente de moneda
+✓ Manejo de excepciones robusto
+✓ Código autodocumentado
+✓ Separación UI/Lógica de negocio
+
+## 6. EXPERIENCIA DE USUARIO
+
+### 6.1 Navegación
+- Menús numerados (fácil selección)
+- Opción "0" siempre vuelve
+- Breadcrumbs en encabezados
+- Flujo intuitivo
+
+### 6.2 Feedback
+- Confirmación de operaciones exitosas
+- Mensajes de error claros
+- Progreso visible en operaciones
+- Resúmenes antes de confirmar
+
+### 6.3 Prevención de Errores
+- Validación en tiempo real
+- Rangos restringidos
+- Confirmaciones obligatorias
+- Formato sugerido (ejemplos)
+
+## 7. ESTRUCTURA DE ARCHIVOS
+
+src/main/java/com/wallet/presentation/
+├── utils/
+│   └── ConsoleUtils.java          (Utilidades I/O)
+├── controllers/
+│   ├── UsuarioController.java     (Controlador usuarios)
+│   ├── CuentaController.java      (Controlador cuentas)
+│   └── TransaccionController.java (Controlador transacciones)
+└── menus/
+    ├── MenuPrincipal.java         (Menú raíz)
+    ├── MenuUsuarios.java          (Gestión usuarios)
+    ├── MenuCuentas.java           (Gestión cuentas)
+    └── MenuTransacciones.java     (Transacciones)
+
+## 8. INTEGRACIÓN CON CAPAS PREVIAS
+
+PRESENTACIÓN → INFRAESTRUCTURA:
+- Controllers usan Services
+- No conoce repositorios ni casos de uso directamente
+- Trabaja solo con DTOs
+
+PRESENTACIÓN → APLICACIÓN:
+- Indirectamente vía Services
+- Services orquestan Use Cases
+- Controllers no manejan lógica de negocio
+
+PRESENTACIÓN → DOMINIO:
+- Sin dependencia directa
+- Aislamiento total de entidades
+- Solo validaciones básicas de formato
+
+## 9. COMPILACIÓN Y EJECUCIÓN
+
+### 9.1 Compilar
+Comando: .\compile.ps1
+Resultado: ✅ EXITOSA
+Clases compiladas: 12 archivos de presentación
+
+### 9.2 Ejecutar
+Comando: .\run.ps1 (o java -cp target\classes com.wallet.Main)
+Resultado: Menú principal interactivo
+
+### 9.3 Navegación Verificada
+✓ Todos los menús funcionan
+✓ Navegación ida y vuelta
+✓ Validaciones activas
+✓ Confirmaciones funcionando
+✓ Manejo de errores correcto
+
+## 10. CASOS DE USO CUBIERTOS
+
+USUARIOS:
+✓ Registrar nuevo usuario
+✓ Listar usuarios activos
+✓ Buscar por email
+
+CUENTAS:
+✓ Crear cuenta para usuario
+✓ Depositar dinero
+✓ Retirar dinero
+✓ Consultar saldo
+✓ Listar cuentas de usuario
+✓ Buscar cuenta por número
+
+TRANSACCIONES:
+✓ Transferir entre cuentas
+✓ Ver historial completo
+✓ Ver últimas N transacciones
+
+CONSULTAS:
+✓ Saldo actual
+✓ Historial de movimientos
+✓ Búsquedas por email/número
+✓ Últimas transacciones
+
+## 11. CARACTERÍSTICAS DESTACADAS
+
+### 11.1 Usabilidad
+- Interfaz intuitiva y consistente
+- Mensajes claros en español
+- Validación robusta
+- Confirmaciones donde necesario
+- Formato de moneda amigable ($XXX.XX)
+
+### 11.2 Robustez
+- Manejo de excepciones completo
+- Validaciones en múltiples niveles
+- Sin crashes por entrada inválida
+- Logging de operaciones
+
+### 11.3 Mantenibilidad
+- Código bien organizado
+- Responsabilidades claras
+- Fácil agregar funcionalidad
+- Comentarios descriptivos
+
+## 12. PRÓXIMOS PASOS (Etapa 6)
+
+TESTING INTEGRAL:
+1. Tests de controladores
+2. Tests de integración UI
+3. Tests de flujos completos
+4. Tests de validaciones
+5. Tests de manejo de errores
+
+MEJORAS OPCIONALES:
+- Paginación en listas largas
+- Filtros avanzados en consultas
+- Exportar reportes
+- Múltiples idiomas
+- Temas de color
+
+## 13. CONCLUSIÓN
+
+La Etapa 5 completa el ciclo de desarrollo con:
+✅ Interfaz de usuario funcional y amigable
+✅ Todos los casos de uso accesibles
+✅ Validaciones y confirmaciones implementadas
+✅ Manejo robusto de errores
+✅ Navegación intuitiva
+✅ Separación clara de responsabilidades
+✅ Integración exitosa con todas las capas
+
+ESTADO: ✅ COMPLETADA 100%
+COMPILACIÓN: ✅ EXITOSA
+FUNCIONALIDAD: ✅ VERIFICADA
+PRÓXIMA ETAPA: Testing Integral (Etapa 6)
+
+===============================================
+PROYECTO WALLET - 62.5% COMPLETADO (5/8 ETAPAS)
+===============================================

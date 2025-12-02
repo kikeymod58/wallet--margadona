@@ -1,7 +1,7 @@
 package com.wallet.infrastructure.services;
 
 import com.wallet.application.dtos.TransaccionDTO;
-import com.wallet.application.dtos.TransferirDineroRequest;
+import com.wallet.application.dtos.requests.TransferirDineroRequest;
 import com.wallet.application.mappers.TransaccionMapper;
 import com.wallet.application.usecases.TransferirDineroUseCase;
 import com.wallet.application.usecases.ConsultarHistorialUseCase;
@@ -30,22 +30,22 @@ public class TransaccionService {
         var transaccionRepo = RepositoryFactory.getTransaccionRepository();
         
         this.transferirDineroUseCase = new TransferirDineroUseCase(cuentaRepo, transaccionRepo);
-        this.consultarHistorialUseCase = new ConsultarHistorialUseCase(transaccionRepo);
+        this.consultarHistorialUseCase = new ConsultarHistorialUseCase(cuentaRepo, transaccionRepo);
     }
     
     /**
      * Transfiere dinero entre cuentas.
      * Retorna la transacción de TRANSFERENCIA_SALIDA.
      */
-    public TransaccionDTO transferir(TransferirDineroRequest request) {
-        Logger.info("Transfiriendo $" + request.monto() + 
-                   " de " + request.numeroCuentaOrigen() + 
-                   " a " + request.numeroCuentaDestino());
+    public List<TransaccionDTO> transferir(TransferirDineroRequest request) {
+        Logger.info("Transfiriendo $" + request.getMonto() + 
+                   " de " + request.getCuentaOrigenId() + 
+                   " a " + request.getCuentaDestinoId());
         
         try {
-            Transaccion transaccion = transferirDineroUseCase.ejecutar(request);
-            Logger.info("Transferencia exitosa. ID: " + transaccion.getId());
-            return TransaccionMapper.toDTO(transaccion);
+            List<TransaccionDTO> transacciones = transferirDineroUseCase.ejecutar(request);
+            Logger.info("Transferencia exitosa.");
+            return transacciones;
         } catch (Exception e) {
             Logger.error("Error al transferir dinero", e);
             throw e;
@@ -58,10 +58,12 @@ public class TransaccionService {
     public List<TransaccionDTO> consultarHistorial(String numeroCuenta) {
         Logger.debug("Consultando historial de cuenta: " + numeroCuenta);
         
-        return consultarHistorialUseCase.ejecutar(numeroCuenta)
-            .stream()
-            .map(TransaccionMapper::toDTO)
-            .collect(Collectors.toList());
+        // Buscar cuenta por número
+        var cuenta = RepositoryFactory.getCuentaRepository()
+            .buscarPorNumeroCuenta(numeroCuenta)
+            .orElseThrow(() -> new IllegalArgumentException("Cuenta no encontrada"));
+        
+        return consultarHistorialUseCase.ejecutar(cuenta.getId());
     }
     
     /**

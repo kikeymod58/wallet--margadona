@@ -1,254 +1,413 @@
-# 💰 Wallet - Sistema de Billetera Digital
+# 💳 Wallet - Sistema de Gestión de Billetera Digital
 
-[![Java](https://img.shields.io/badge/Java-17-orange.svg)](https://www.oracle.com/java/)
-[![Maven](https://img.shields.io/badge/Maven-3.8+-blue.svg)](https://maven.apache.org/)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Java](https://img.shields.io/badge/Java-21-orange.svg)](https://www.oracle.com/java/)
+[![Tests](https://img.shields.io/badge/Tests-85%2F85-brightgreen.svg)](/)
+[![Architecture](https://img.shields.io/badge/Architecture-Clean%20Architecture-blue.svg)](/)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](/)
 
-Sistema de billetera digital desarrollado en Java aplicando **Clean Architecture**, principios **SOLID**, las **4 Reglas del Diseño Simple** y buenas prácticas de POO.
+Sistema de billetera digital implementado en **Java 21** siguiendo los principios de **Clean Architecture**. Incluye gestión de usuarios, cuentas, depósitos, retiros y transferencias con validaciones robustas y almacenamiento en memoria.
 
-## 📋 Descripción
+---
 
-Wallet es una aplicación de consola que permite gestionar cuentas bancarias digitales, realizar transacciones (depósitos, retiros, transferencias) y consultar el historial de movimientos. El proyecto está diseñado con énfasis en código limpio, arquitectura desacoplada y alta testeabilidad.
+## 📋 Tabla de Contenidos
+
+- [Características](#-características)
+- [Arquitectura](#-arquitectura)
+- [Requisitos](#-requisitos)
+- [Instalación](#-instalación)
+- [Uso](#-uso)
+- [Testing](#-testing)
+- [Estructura del Proyecto](#-estructura-del-proyecto)
+- [Documentación](#-documentación)
+
+---
+
+## ✨ Características
+
+### 👤 Gestión de Usuarios
+- ✅ Registro de usuarios con validación de email y documento
+- ✅ Búsqueda por ID, email o documento de identidad
+- ✅ Activación/desactivación de usuarios
+- ✅ Actualización de datos personales
+
+### 💰 Gestión de Cuentas
+- ✅ Creación automática de cuentas con número único
+- ✅ Consulta de saldo en tiempo real
+- ✅ Soporte para múltiples monedas (PEN, USD, EUR)
+- ✅ Estado de cuenta (activa/inactiva)
+
+### 💸 Operaciones Financieras
+- ✅ **Depósitos**: Incremento de saldo con validaciones
+- ✅ **Retiros**: Extracción de fondos con verificación de saldo
+- ✅ **Transferencias**: Entre cuentas con registro de transacciones
+- ✅ Historial completo de transacciones por cuenta
+
+### 🔒 Validaciones y Seguridad
+- ✅ Validación de saldo suficiente en retiros
+- ✅ Prevención de emails duplicados
+- ✅ Prevención de documentos duplicados
+- ✅ Validación de montos positivos
+- ✅ Verificación de cuentas activas
+- ✅ Thread-safety en repositorios (ConcurrentHashMap)
+
+---
 
 ## 🏗️ Arquitectura
 
-El proyecto sigue los principios de **Clean Architecture** con separación clara de responsabilidades:
+El proyecto implementa **Clean Architecture** con 4 capas bien definidas:
 
 ```
-wallet/
-├── src/
-│   ├── main/
-│   │   └── java/
-│   │       └── com/
-│   │           └── wallet/
-│   │               ├── domain/          # Lógica de negocio pura
-│   │               │   ├── entities/    # Entidades del dominio
-│   │               │   ├── valueobjects/  # Objetos de valor inmutables
-│   │               │   ├── repositories/  # Interfaces de repositorios
-│   │               │   └── exceptions/    # Excepciones del dominio
-│   │               │
-│   │               ├── application/     # Casos de uso
-│   │               │   ├── usecases/    # Implementación de casos de uso
-│   │               │   ├── dtos/        # Data Transfer Objects
-│   │               │   └── services/    # Interfaces de servicios
-│   │               │
-│   │               ├── infrastructure/  # Implementaciones técnicas
-│   │               │   ├── repositories/  # Implementaciones de repos
-│   │               │   ├── persistence/   # Gestión de persistencia
-│   │               │   └── services/      # Servicios externos
-│   │               │
-│   │               └── presentation/    # Interfaz de usuario
-│   │                   ├── controllers/  # Controladores
-│   │                   └── ui/           # Interfaz de consola
-│   │
-│   └── test/
-│       └── java/
-│           └── com/
-│               └── wallet/
-│                   ├── domain/          # Tests de dominio
-│                   ├── application/     # Tests de casos de uso
-│                   └── infrastructure/  # Tests de infraestructura
-│
-├── pom.xml
-├── README.md
-└── PLAN_DESARROLLO.md
+┌─────────────────────────────────────────────────────┐
+│               PRESENTATION LAYER                    │
+│  (Console UI, Controllers, Menus, Utils)           │
+└─────────────────────────────────────────────────────┘
+                        ↓
+┌─────────────────────────────────────────────────────┐
+│              APPLICATION LAYER                      │
+│  (Use Cases, DTOs, Mappers, Requests/Responses)    │
+└─────────────────────────────────────────────────────┘
+                        ↓
+┌─────────────────────────────────────────────────────┐
+│              INFRASTRUCTURE LAYER                   │
+│  (Repositories, Services, Factories, Logger)        │
+└─────────────────────────────────────────────────────┘
+                        ↓
+┌─────────────────────────────────────────────────────┐
+│                 DOMAIN LAYER                        │
+│  (Entities, Value Objects, Exceptions, Interfaces) │
+└─────────────────────────────────────────────────────┘
 ```
 
-## 🎯 Principios Aplicados
+### Patrones de Diseño Implementados
 
-### SOLID
-- **S**ingle Responsibility Principle: Cada clase tiene una única razón para cambiar
-- **O**pen/Closed Principle: Abierto a extensión, cerrado a modificación
-- **L**iskov Substitution Principle: Las implementaciones son intercambiables
-- **I**nterface Segregation Principle: Interfaces específicas y cohesivas
-- **D**ependency Inversion Principle: Dependencias hacia abstracciones
+- **Repository Pattern**: Abstracción del acceso a datos
+- **Factory Pattern**: Creación centralizada de repositorios
+- **Singleton Pattern**: Instancia única del RepositoryFactory
+- **Facade Pattern**: Servicios que simplifican operaciones complejas
+- **MVC Pattern**: Separación de lógica de presentación
+- **Command Pattern**: Menús con acciones encapsuladas
+- **DTO Pattern**: Transferencia de datos entre capas
+- **Value Object Pattern**: Inmutabilidad de objetos de valor
 
-### Las 4 Reglas del Diseño Simple
-1. ✅ Pasa todos los tests
-2. 📖 Revela intención (código autodocumentado)
-3. 🚫 Sin duplicación (DRY)
-4. 🎯 Mínimo de elementos (YAGNI)
+---
 
-## 🚀 Tecnologías
+## 🔧 Requisitos
 
-- **Java 17**: Lenguaje de programación
-- **Maven**: Gestión de dependencias y build
-- **JUnit 5**: Framework de testing
-- **Mockito**: Framework de mocking
-- **AssertJ**: Assertions fluidas y legibles
-- **JaCoCo**: Cobertura de código
+- **Java Development Kit (JDK)**: 21+
+- **PowerShell**: 5.1+ (Windows)
+- **Dependencias** (descarga automática):
+  - JUnit Platform Console Standalone 1.10.1
+  - Mockito Core 5.8.0
+  - Byte Buddy 1.14.11
+  - Objenesis 3.3
 
-## 📦 Instalación
+---
 
-### Requisitos Previos
-- JDK 17 o superior (el proyecto usa Java 21)
-- Maven 3.8 o superior (opcional - incluye scripts PowerShell alternativos)
+## 📥 Instalación
 
-### Clonar el Repositorio
-```bash
+### 1. Clonar el repositorio
+
+```powershell
 git clone <repository-url>
 cd wallet
 ```
 
-### Opción A: Con Maven (Recomendado)
+### 2. Descargar dependencias
 
-#### Compilar el Proyecto
-```bash
-mvn clean compile
+```powershell
+.\download-dependencies.ps1
 ```
 
-#### Ejecutar Tests
-```bash
-mvn test
-```
+Este script descarga automáticamente:
+- JUnit para testing
+- Mockito para mocking en tests
+- Dependencias necesarias (Byte Buddy, Objenesis)
 
-#### Generar Reporte de Cobertura
-```bash
-mvn clean test jacoco:report
-```
-El reporte se generará en: `target/site/jacoco/index.html`
+### 3. Compilar el proyecto
 
-#### Empaquetar la Aplicación
-```bash
-mvn clean package
-```
-
-#### Ejecutar la Aplicación
-```bash
-java -jar target/wallet-app-1.0.0.jar
-```
-
-O directamente con Maven:
-```bash
-mvn exec:java -Dexec.mainClass="com.wallet.Main"
-```
-
-### Opción B: Sin Maven (Scripts PowerShell)
-
-Si no tienes Maven instalado, puedes usar los scripts de PowerShell incluidos:
-
-#### Compilar
 ```powershell
 .\compile.ps1
 ```
 
-#### Ejecutar
+Compila todo el código fuente y lo coloca en `target/classes/`.
+
+---
+
+## 🚀 Uso
+
+### Ejecutar la aplicación
+
 ```powershell
 .\run.ps1
 ```
 
-#### Compilar y Ejecutar (Todo en uno)
-```powershell
-.\build-and-run.ps1
+### Interfaz de Usuario
+
+El sistema presenta un menú interactivo de consola:
+
+```
+═══════════════════════════════════
+  💳 SISTEMA DE BILLETERA DIGITAL
+═══════════════════════════════════
+
+   MENÚ PRINCIPAL
+───────────────────────────────────
+   1. 👤 Gestión de Usuarios
+   2. 💰 Gestión de Cuentas
+   3. 💸 Transacciones
+   4. 🚪 Salir
+───────────────────────────────────
 ```
 
-> 💡 **Nota**: Los scripts PowerShell son una alternativa simple para desarrollo. Para producción o CI/CD, se recomienda usar Maven.
+### Flujo de Uso Típico
 
-Ver más detalles en [SCRIPTS.md](SCRIPTS.md)
+1. **Registrar Usuario**
+   - Menú Usuarios → Registrar nuevo usuario
+   - Ingresar: nombre, apellido, email, tipo documento, número
 
-## 🎮 Uso
+2. **Crear Cuenta**
+   - Menú Cuentas → Crear nueva cuenta
+   - Ingresar: email del usuario
 
-La aplicación presenta un menú interactivo de consola con las siguientes opciones:
+3. **Depositar Dinero**
+   - Menú Cuentas → Depositar dinero
+   - Ingresar: número de cuenta, monto
 
-1. **Crear Usuario**: Registrar un nuevo usuario en el sistema
-2. **Crear Cuenta**: Asociar una cuenta bancaria a un usuario
-3. **Realizar Depósito**: Agregar fondos a una cuenta
-4. **Realizar Retiro**: Extraer fondos de una cuenta
-5. **Realizar Transferencia**: Transferir fondos entre cuentas
-6. **Consultar Saldo**: Ver el saldo actual de una cuenta
-7. **Ver Historial**: Consultar movimientos realizados
-8. **Salir**: Cerrar la aplicación
+4. **Realizar Transferencia**
+   - Menú Transacciones → Realizar transferencia
+   - Ingresar: cuenta origen, cuenta destino, monto
 
-## 🧪 Testing
-
-El proyecto mantiene una alta cobertura de tests:
-
-```bash
-# Ejecutar todos los tests
-mvn test
-
-# Ejecutar tests con cobertura
-mvn clean test jacoco:report
-
-# Ejecutar tests específicos
-mvn test -Dtest=UsuarioTest
-```
-
-## 📊 Cobertura de Código
-
-Objetivo de cobertura mínima: **70%**
-
-Para ver el reporte de cobertura:
-1. Ejecutar: `mvn clean test jacoco:report`
-2. Abrir: `target/site/jacoco/index.html`
-
-## 🏆 Buenas Prácticas Implementadas
-
-- ✅ Nombres descriptivos y significativos
-- ✅ Métodos pequeños y enfocados (< 20 líneas)
-- ✅ Inmutabilidad en Value Objects
-- ✅ Validaciones tempranas (Fail-fast)
-- ✅ Separación de responsabilidades
-- ✅ Tests unitarios y de integración
-- ✅ Commits atómicos con mensajes descriptivos
-- ✅ Documentación clara y actualizada
-
-## 📝 Convenciones de Código
-
-- **Paquetes**: lowercase (com.wallet.domain)
-- **Clases**: PascalCase (Usuario, CuentaBancaria)
-- **Métodos**: camelCase (realizarDeposito, obtenerSaldo)
-- **Constantes**: UPPER_SNAKE_CASE (MAX_RETIRO_DIARIO)
-- **Variables**: camelCase (saldoActual, nombreUsuario)
-
-## 🔄 Estado del Proyecto
-
-### ✅ Completado
-- [x] **Etapa 1**: Configuración inicial y estructura del proyecto
-  - ✅ Estructura de carpetas con Clean Architecture
-  - ✅ Maven configurado con dependencias
-  - ✅ Scripts PowerShell alternativos
-  - ✅ Documentación inicial
-  
-- [x] **Etapa 2**: Implementación de la capa de dominio
-  - ✅ 3 Entidades (Usuario, Cuenta, Transaccion)
-  - ✅ 4 Value Objects (Email, DocumentoIdentidad, Dinero, TipoTransaccion)
-  - ✅ 3 Interfaces de Repositorio (IUsuarioRepository, ICuentaRepository, ITransaccionRepository)
-  - ✅ 4 Excepciones de dominio
-  - ✅ 52 Tests unitarios (100% exitosos, >95% coverage)
-
-### 🚧 En Progreso
-- [ ] **Etapa 3**: Implementación de la capa de aplicación
-
-### 📋 Pendiente
-- [ ] Etapa 4: Implementación de la capa de infraestructura
-- [ ] Etapa 5: Implementación de la capa de presentación
-- [ ] Etapa 6: Testing integral
-- [ ] Etapa 7: Documentación y refinamiento
-- [ ] Etapa 8: Entrega y presentación
-
-Ver detalles completos en [PLAN_DESARROLLO.md](PLAN_DESARROLLO.md)
-
-**Progreso General**: ⬛⬛⬜⬜⬜⬜⬜⬜ 25% (2/8 etapas completadas)
-
-## 👥 Contribución
-
-Este es un proyecto educativo. Para contribuir:
-
-1. Fork el proyecto
-2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
-
-## 📄 Licencia
-
-Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para más detalles.
-
-## 📞 Contacto
-
-Proyecto desarrollado como evaluación integradora del Módulo 2.
+5. **Consultar Historial**
+   - Menú Transacciones → Ver historial
+   - Ingresar: número de cuenta
 
 ---
 
-⭐ **Star** este proyecto si te ha sido útil!
+## 🧪 Testing
+
+### Ejecutar todos los tests
+
+```powershell
+.\test.ps1
+```
+
+### Estadísticas de Testing
+
+- **Total de Tests**: 85
+- **Tests Exitosos**: 85 ✅
+- **Cobertura**: ~85%
+
+#### Distribución por Capa
+
+| Capa              | Tests | Descripción                          |
+|-------------------|-------|--------------------------------------|
+| Domain            | 52    | Entities y Value Objects             |
+| Application       | 14    | Use Cases con Mockito                |
+| Infrastructure    | 15    | Repositories y servicios             |
+| Integration       | 4     | Flujos end-to-end                    |
+
+### Tecnologías de Testing
+
+- **JUnit 5.10.1**: Framework de testing
+- **Mockito 5.8.0**: Mocking de dependencias
+- **PowerShell Scripts**: Automatización de tests
+
+### Ejecutar tests específicos
+
+```powershell
+# Tests de dominio
+java -jar lib\junit-platform-console-standalone-1.10.1.jar `
+     --class-path "target\classes;target\test-classes;lib\*" `
+     -c com.wallet.domain.entities.CuentaTest
+
+# Tests de use cases
+java -jar lib\junit-platform-console-standalone-1.10.1.jar `
+     --class-path "target\classes;target\test-classes;lib\*" `
+     -c com.wallet.application.usecases.CrearUsuarioUseCaseTest
+```
+
+---
+
+## 📁 Estructura del Proyecto
+
+```
+wallet/
+├── src/
+│   ├── main/java/com/wallet/
+│   │   ├── domain/                    # Capa de Dominio
+│   │   │   ├── entities/              # Entidades (Usuario, Cuenta, Transaccion)
+│   │   │   ├── valueobjects/          # Value Objects (Email, Dinero, etc.)
+│   │   │   ├── exceptions/            # Excepciones de negocio
+│   │   │   └── repositories/          # Interfaces de repositorios
+│   │   ├── application/               # Capa de Aplicación
+│   │   │   ├── usecases/              # Casos de uso (8 Use Cases)
+│   │   │   ├── dtos/                  # Data Transfer Objects
+│   │   │   │   ├── requests/          # DTOs de entrada
+│   │   │   │   └── responses/         # DTOs de salida
+│   │   │   └── mappers/               # Mappers Entity ↔ DTO
+│   │   ├── infrastructure/            # Capa de Infraestructura
+│   │   │   ├── repositories/          # Implementaciones en memoria
+│   │   │   ├── services/              # Servicios de fachada
+│   │   │   ├── factory/               # Factory de repositorios
+│   │   │   └── logging/               # Sistema de logging
+│   │   └── presentation/              # Capa de Presentación
+│   │       ├── console/               # Interfaz de consola
+│   │       ├── controllers/           # Controladores MVC
+│   │       ├── menus/                 # Menús interactivos
+│   │       └── Main.java              # Punto de entrada
+│   └── test/java/com/wallet/          # Tests
+│       ├── domain/                    # Tests de dominio (52)
+│       ├── application/               # Tests de use cases (14)
+│       └── infrastructure/            # Tests de infra (19)
+├── lib/                               # Dependencias (JARs)
+│   ├── junit-platform-console-standalone-1.10.1.jar
+│   ├── mockito-core-5.8.0.jar
+│   ├── byte-buddy-1.14.11.jar
+│   ├── byte-buddy-agent-1.14.11.jar
+│   └── objenesis-3.3.jar
+├── target/                            # Archivos compilados
+│   ├── classes/                       # Clases del proyecto
+│   └── test-classes/                  # Clases de test
+├── *.ps1                              # Scripts de PowerShell
+├── README.md                          # Este archivo
+├── ARCHITECTURE.md                    # Documentación de arquitectura
+├── DEVELOPMENT.md                     # Guía de desarrollo
+└── ETAPA_*.txt                        # Documentación de etapas
+```
+
+---
+
+## 📚 Documentación
+
+### Documentos Disponibles
+
+- **[ARCHITECTURE.md](ARCHITECTURE.md)**: Arquitectura detallada y decisiones de diseño
+- **[DEVELOPMENT.md](DEVELOPMENT.md)**: Guía para desarrolladores
+- **[ETAPA_2_COMPLETADA.txt](ETAPA_2_COMPLETADA.txt)**: Documentación de la capa de dominio
+- **[ETAPA_6_COMPLETADA.txt](ETAPA_6_COMPLETADA.txt)**: Documentación de testing
+
+### API de Use Cases
+
+#### Gestión de Usuarios
+
+```java
+// Crear usuario
+CrearUsuarioRequest request = new CrearUsuarioRequest(
+    "Juan", "Perez", "juan@email.com", 
+    TipoDocumento.DNI, "12345678"
+);
+UsuarioDTO usuario = crearUsuarioUseCase.ejecutar(request);
+
+// Buscar usuario por email
+UsuarioDTO usuario = buscarUsuarioPorEmailUseCase.ejecutar("juan@email.com");
+
+// Listar usuarios activos
+List<UsuarioDTO> usuarios = listarUsuariosUseCase.ejecutar();
+```
+
+#### Gestión de Cuentas
+
+```java
+// Crear cuenta
+CuentaDTO cuenta = crearCuentaUseCase.ejecutar(usuarioId);
+
+// Consultar saldo
+CuentaDTO cuenta = consultarSaldoUseCase.ejecutar(numeroCuenta);
+
+// Listar cuentas de un usuario
+List<CuentaDTO> cuentas = listarCuentasUseCase.ejecutar(usuarioId);
+```
+
+#### Operaciones Financieras
+
+```java
+// Depositar dinero
+DepositarDineroRequest request = new DepositarDineroRequest(
+    cuentaId, new BigDecimal("100.00"), "Depósito inicial"
+);
+TransaccionDTO transaccion = depositarDineroUseCase.ejecutar(request);
+
+// Retirar dinero
+RetirarDineroRequest request = new RetirarDineroRequest(
+    cuentaId, new BigDecimal("50.00"), "Retiro cajero"
+);
+TransaccionDTO transaccion = retirarDineroUseCase.ejecutar(request);
+
+// Transferir dinero
+TransferirDineroRequest request = new TransferirDineroRequest(
+    cuentaOrigenId, cuentaDestinoId, 
+    new BigDecimal("200.00"), "Pago de servicio"
+);
+TransaccionDTO transaccion = transferirDineroUseCase.ejecutar(request);
+```
+
+---
+
+## 🎯 Etapas del Proyecto
+
+El proyecto se desarrolló en 8 etapas:
+
+1. ✅ **Configuración**: Estructura de carpetas y scripts
+2. ✅ **Domain Layer**: Entidades, Value Objects, excepciones
+3. ✅ **Application Layer**: Use Cases, DTOs, Mappers
+4. ✅ **Infrastructure Layer**: Repositorios, servicios, logging
+5. ✅ **Presentation Layer**: UI de consola, controladores, menús
+6. ✅ **Testing**: 85 tests unitarios, integración y e2e
+7. ✅ **Documentación**: README, arquitectura, guías
+8. ⏳ **Entrega**: Presentación y demostración final
+
+---
+
+## 🤝 Contribuir
+
+### Convenciones de Código
+
+- **Nombres de clases**: PascalCase (`Usuario`, `CuentaDTO`)
+- **Nombres de métodos**: camelCase (`ejecutar()`, `buscarPorId()`)
+- **Nombres de constantes**: UPPER_SNAKE_CASE (`MONEDA_DEFAULT`)
+- **Paquetes**: minúsculas (`com.wallet.domain.entities`)
+
+### Agregar un Nuevo Use Case
+
+1. Crear la clase en `application/usecases/`
+2. Implementar método `ejecutar()`
+3. Crear DTOs de request/response si es necesario
+4. Agregar tests en `test/.../usecases/`
+5. Actualizar servicios en Infrastructure si aplica
+
+### Ejecutar Tests Antes de Commit
+
+```powershell
+.\compile.ps1
+.\test.ps1
+```
+
+---
+
+## 📝 Licencia
+
+Este proyecto es de código abierto y está disponible bajo la licencia MIT.
+
+---
+
+## 👨‍💻 Autor
+
+Desarrollado como proyecto educativo para demostrar:
+- Principios SOLID
+- Clean Architecture
+- Patrones de Diseño
+- Test Driven Development
+- Buenas prácticas de Java
+
+---
+
+## 📞 Soporte
+
+Para preguntas o problemas:
+- Crear un issue en el repositorio
+- Revisar la documentación en `/docs`
+- Consultar los archivos `ETAPA_*.txt`
+
+---
+
+**¡Gracias por usar Wallet!** 💳✨

@@ -92,7 +92,8 @@ public class TransaccionRepositoryInMemory implements ITransaccionRepository {
     /**
      * Obtiene las últimas N transacciones de una cuenta.
      */
-    public List<Transaccion> obtenerUltimas(String cuentaId, int limite) {
+    @Override
+    public List<Transaccion> obtenerUltimasPorCuenta(String cuentaId, int limite) {
         if (cuentaId == null || cuentaId.trim().isEmpty() || limite <= 0) {
             return Collections.emptyList();
         }

@@ -1,7 +1,7 @@
 package com.wallet.infrastructure.services;
 
 import com.wallet.application.dtos.UsuarioDTO;
-import com.wallet.application.dtos.CrearUsuarioRequest;
+import com.wallet.application.dtos.requests.CrearUsuarioRequest;
 import com.wallet.application.mappers.UsuarioMapper;
 import com.wallet.application.usecases.CrearUsuarioUseCase;
 import com.wallet.application.usecases.BuscarUsuarioUseCase;
@@ -38,12 +38,12 @@ public class UsuarioService {
      * Crea un nuevo usuario.
      */
     public UsuarioDTO crearUsuario(CrearUsuarioRequest request) {
-        Logger.info("Creando usuario: " + request.email());
+        Logger.info("Creando usuario: " + request.getEmail());
         
         try {
-            Usuario usuario = crearUsuarioUseCase.ejecutar(request);
+            UsuarioDTO usuario = crearUsuarioUseCase.ejecutar(request);
             Logger.info("Usuario creado exitosamente: " + usuario.getId());
-            return UsuarioMapper.toDTO(usuario);
+            return usuario;
         } catch (Exception e) {
             Logger.error("Error al crear usuario", e);
             throw e;
@@ -56,8 +56,8 @@ public class UsuarioService {
     public Optional<UsuarioDTO> buscarPorId(String usuarioId) {
         Logger.debug("Buscando usuario por ID: " + usuarioId);
         
-        Optional<Usuario> usuario = buscarUsuarioUseCase.buscarPorId(usuarioId);
-        return usuario.map(UsuarioMapper::toDTO);
+        UsuarioDTO usuario = buscarUsuarioUseCase.ejecutarPorId(usuarioId);
+        return Optional.ofNullable(usuario);
     }
     
     /**
@@ -66,8 +66,8 @@ public class UsuarioService {
     public Optional<UsuarioDTO> buscarPorEmail(String email) {
         Logger.debug("Buscando usuario por email: " + email);
         
-        Optional<Usuario> usuario = buscarUsuarioUseCase.buscarPorEmail(email);
-        return usuario.map(UsuarioMapper::toDTO);
+        UsuarioDTO usuario = buscarUsuarioUseCase.ejecutarPorEmail(email);
+        return Optional.ofNullable(usuario);
     }
     
     /**

@@ -1,11 +1,14 @@
 package com.wallet.infrastructure.services;
 
 import com.wallet.application.dtos.CuentaDTO;
-import com.wallet.application.dtos.DepositarDineroRequest;
-import com.wallet.application.dtos.RetirarDineroRequest;
+import com.wallet.application.dtos.TransaccionDTO;
+import com.wallet.application.dtos.requests.DepositarDineroRequest;
+import com.wallet.application.dtos.requests.RetirarDineroRequest;
 import com.wallet.application.mappers.CuentaMapper;
 import com.wallet.application.usecases.*;
 import com.wallet.domain.entities.Cuenta;
+import com.wallet.domain.entities.Usuario;
+import com.wallet.domain.exceptions.UsuarioNoEncontradoException;
 import com.wallet.infrastructure.factories.RepositoryFactory;
 import com.wallet.infrastructure.logging.Logger;
 
@@ -32,7 +35,7 @@ public class CuentaService {
         var cuentaRepo = RepositoryFactory.getCuentaRepository();
         var transaccionRepo = RepositoryFactory.getTransaccionRepository();
         
-        this.crearCuentaUseCase = new CrearCuentaUseCase(usuarioRepo, cuentaRepo);
+        this.crearCuentaUseCase = new CrearCuentaUseCase(cuentaRepo, usuarioRepo);
         this.depositarDineroUseCase = new DepositarDineroUseCase(cuentaRepo, transaccionRepo);
         this.retirarDineroUseCase = new RetirarDineroUseCase(cuentaRepo, transaccionRepo);
         this.consultarSaldoUseCase = new ConsultarSaldoUseCase(cuentaRepo);
@@ -45,9 +48,34 @@ public class CuentaService {
         Logger.info("Creando cuenta para usuario: " + usuarioId);
         
         try {
-            Cuenta cuenta = crearCuentaUseCase.ejecutar(usuarioId);
+            CuentaDTO cuenta = crearCuentaUseCase.ejecutar(usuarioId);
             Logger.info("Cuenta creada exitosamente: " + cuenta.getNumeroCuenta());
-            return CuentaMapper.toDTO(cuenta);
+            return cuenta;
+        } catch (Exception e) {
+            Logger.error("Error al crear cuenta", e);
+            throw e;
+        }
+    }
+    
+    /**
+     * Crea una nueva cuenta buscando usuario por email.
+     */
+    public CuentaDTO crearCuentaPorEmail(String email) {
+        Logger.info("Creando cuenta para usuario con email: " + email);
+        
+        try {
+            // Buscar usuario por email
+            Optional<Usuario> usuarioOpt = RepositoryFactory.getUsuarioRepository()
+                .buscarPorEmail(new com.wallet.domain.valueobjects.Email(email));
+            
+            if (!usuarioOpt.isPresent()) {
+                throw new UsuarioNoEncontradoException("No existe un usuario con el email: " + email);
+            }
+            
+            Usuario usuario = usuarioOpt.get();
+            CuentaDTO cuenta = crearCuentaUseCase.ejecutar(usuario.getId());
+            Logger.info("Cuenta creada exitosamente: " + cuenta.getNumeroCuenta());
+            return cuenta;
         } catch (Exception e) {
             Logger.error("Error al crear cuenta", e);
             throw e;
@@ -57,13 +85,44 @@ public class CuentaService {
     /**
      * Deposita dinero en una cuenta.
      */
-    public CuentaDTO depositar(DepositarDineroRequest request) {
-        Logger.info("Depositando $" + request.monto() + " en cuenta: " + request.numeroCuenta());
+    public TransaccionDTO depositar(DepositarDineroRequest request) {
+        Logger.info("Depositando $" + request.getMonto() + " en cuenta: " + request.getCuentaId());
         
         try {
-            Cuenta cuenta = depositarDineroUseCase.ejecutar(request);
-            Logger.info("Depósito exitoso. Nuevo saldo: $" + cuenta.getSaldo().getMonto());
-            return CuentaMapper.toDTO(cuenta);
+            TransaccionDTO transaccion = depositarDineroUseCase.ejecutar(request);
+            Logger.info("Deposito exitoso. Saldo actualizado.");
+            return transaccion;
+        } catch (Exception e) {
+            Logger.error("Error al depositar dinero", e);
+            throw e;
+        }
+    }
+    
+    /**
+     * Deposita dinero en una cuenta usando el número de cuenta.
+     */
+    public TransaccionDTO depositarPorNumero(String numeroCuenta, BigDecimal monto, String descripcion) {
+        Logger.info("Depositando $" + monto + " en cuenta: " + numeroCuenta);
+        
+        try {
+            // Buscar cuenta por número para obtener el ID
+            Optional<Cuenta> cuentaOpt = RepositoryFactory.getCuentaRepository()
+                .buscarPorNumeroCuenta(numeroCuenta);
+            
+            if (!cuentaOpt.isPresent()) {
+                throw new com.wallet.domain.exceptions.CuentaNoEncontradaException(
+                    "No existe una cuenta con el número: " + numeroCuenta
+                );
+            }
+            
+            Cuenta cuenta = cuentaOpt.get();
+            DepositarDineroRequest request = new DepositarDineroRequest(
+                cuenta.getId(), monto, descripcion
+            );
+            
+            TransaccionDTO transaccion = depositarDineroUseCase.ejecutar(request);
+            Logger.info("Deposito exitoso. Saldo actualizado.");
+            return transaccion;
         } catch (Exception e) {
             Logger.error("Error al depositar dinero", e);
             throw e;
@@ -73,13 +132,44 @@ public class CuentaService {
     /**
      * Retira dinero de una cuenta.
      */
-    public CuentaDTO retirar(RetirarDineroRequest request) {
-        Logger.info("Retirando $" + request.monto() + " de cuenta: " + request.numeroCuenta());
+    public TransaccionDTO retirar(RetirarDineroRequest request) {
+        Logger.info("Retirando $" + request.getMonto() + " de cuenta: " + request.getCuentaId());
         
         try {
-            Cuenta cuenta = retirarDineroUseCase.ejecutar(request);
-            Logger.info("Retiro exitoso. Nuevo saldo: $" + cuenta.getSaldo().getMonto());
-            return CuentaMapper.toDTO(cuenta);
+            TransaccionDTO transaccion = retirarDineroUseCase.ejecutar(request);
+            Logger.info("Retiro exitoso. Saldo actualizado.");
+            return transaccion;
+        } catch (Exception e) {
+            Logger.error("Error al retirar dinero", e);
+            throw e;
+        }
+    }
+    
+    /**
+     * Retira dinero de una cuenta usando el número de cuenta.
+     */
+    public TransaccionDTO retirarPorNumero(String numeroCuenta, BigDecimal monto, String descripcion) {
+        Logger.info("Retirando $" + monto + " de cuenta: " + numeroCuenta);
+        
+        try {
+            // Buscar cuenta por número para obtener el ID
+            Optional<Cuenta> cuentaOpt = RepositoryFactory.getCuentaRepository()
+                .buscarPorNumeroCuenta(numeroCuenta);
+            
+            if (!cuentaOpt.isPresent()) {
+                throw new com.wallet.domain.exceptions.CuentaNoEncontradaException(
+                    "No existe una cuenta con el número: " + numeroCuenta
+                );
+            }
+            
+            Cuenta cuenta = cuentaOpt.get();
+            RetirarDineroRequest request = new RetirarDineroRequest(
+                cuenta.getId(), monto, descripcion
+            );
+            
+            TransaccionDTO transaccion = retirarDineroUseCase.ejecutar(request);
+            Logger.info("Retiro exitoso. Saldo actualizado.");
+            return transaccion;
         } catch (Exception e) {
             Logger.error("Error al retirar dinero", e);
             throw e;
@@ -89,10 +179,10 @@ public class CuentaService {
     /**
      * Consulta el saldo de una cuenta.
      */
-    public BigDecimal consultarSaldo(String numeroCuenta) {
+    public CuentaDTO consultarSaldo(String numeroCuenta) {
         Logger.debug("Consultando saldo de cuenta: " + numeroCuenta);
         
-        return consultarSaldoUseCase.ejecutar(numeroCuenta);
+        return consultarSaldoUseCase.ejecutarPorNumero(numeroCuenta);
     }
     
     /**

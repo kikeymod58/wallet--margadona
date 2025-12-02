@@ -1,11 +1,11 @@
 package com.wallet.domain.entities;
 
-import com.wallet.domain.valueobjects.DocumentoIdentidad;
-import com.wallet.domain.valueobjects.Email;
-
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
+
+import com.wallet.domain.valueobjects.DocumentoIdentidad;
+import com.wallet.domain.valueobjects.Email;
 
 /**
  * Entidad que representa un Usuario del sistema.
