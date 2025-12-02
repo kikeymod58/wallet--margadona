@@ -1,0 +1,77 @@
+================================================================================
+                    ETAPA 2 COMPLETADA - CAPA DE DOMINIO
+================================================================================
+
+ESTADISTICAS DEL DESARROLLO
+--------------------------------------------------------------------------------
+✓ Entidades creadas:        3
+✓ Value Objects:            4  
+✓ Repository Interfaces:    3
+✓ Excepciones de Dominio:   4
+✓ Tests Unitarios:          52
+✓ Tests Exitosos:           52/52 (100%)
+✓ Cobertura Estimada:       >95%
+✓ Tiempo de Ejecución:      541ms
+
+ARCHIVOS IMPLEMENTADOS
+--------------------------------------------------------------------------------
+
+Entidades:
+  - Usuario.java
+  - Cuenta.java
+  - Transaccion.java
+
+Value Objects:
+  - Email.java
+  - DocumentoIdentidad.java
+  - Dinero.java
+  - TipoTransaccion.java
+
+Repository Interfaces:
+  - IUsuarioRepository.java
+  - ICuentaRepository.java
+  - ITransaccionRepository.java
+
+Excepciones:
+  - SaldoInsuficienteException.java
+  - CuentaNoEncontradaException.java
+  - UsuarioNoEncontradoException.java
+  - OperacionNoValidaException.java
+
+Tests:
+  - EmailTest.java        (12 tests)
+  - DineroTest.java       (18 tests)
+  - UsuarioTest.java      (10 tests)
+  - CuentaTest.java       (12 tests)
+
+PRINCIPIOS APLICADOS
+--------------------------------------------------------------------------------
+✓ Clean Architecture
+✓ SOLID Principles
+✓ 4 Rules of Simple Design
+✓ OOP Best Practices
+✓ Immutability (Value Objects)
+✓ Fail-Fast Validation
+✓ Static Factory Methods
+
+PROXIMOS PASOS - ETAPA 3
+--------------------------------------------------------------------------------
+[ ] Implementar Use Cases (Casos de Uso)
+[ ] Crear DTOs (Data Transfer Objects)
+[ ] Implementar Services (Servicios de Aplicación)
+[ ] Crear Mappers entre Entidad y DTO
+[ ] Tests de Use Cases
+
+PROGRESO GENERAL DEL PROYECTO
+--------------------------------------------------------------------------------
+Etapa 1: Configuración       [✓] COMPLETADA
+Etapa 2: Dominio             [✓] COMPLETADA
+Etapa 3: Aplicación          [ ] Pendiente
+Etapa 4: Infraestructura     [ ] Pendiente
+Etapa 5: Presentación        [ ] Pendiente
+
+Progreso: ██░░░░░░ 25%
+
+================================================================================
+Ver detalles completos en: ETAPA_2_COMPLETADA.md
+================================================================================
