@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
  * Implementación en memoria del repositorio de usuarios.
  * Utiliza ConcurrentHashMap para ser thread-safe.
  * 
- * @author Wallet Team
+ * @author Olimpo Team
  * @version 1.0.0
  */
 public class UsuarioRepositoryInMemory implements IUsuarioRepository {

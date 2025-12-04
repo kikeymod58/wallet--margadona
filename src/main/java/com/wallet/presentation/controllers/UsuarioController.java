@@ -12,7 +12,7 @@ import java.util.Optional;
  * Controlador para operaciones de usuarios.
  * Actúa como intermediario entre la UI y el servicio de usuarios.
  * 
- * @author Wallet Team
+ * @author Olimpo Team
  * @version 1.0.0
  */
 public class UsuarioController {

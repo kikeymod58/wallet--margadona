@@ -24,12 +24,12 @@ public final class Dinero {
     private final String moneda;
     
     /**
-     * Crea un nuevo objeto Dinero con la moneda por defecto (PEN).
+     * Crea un nuevo objeto Dinero con la moneda por defecto (CLP).
      * 
      * @param cantidad la cantidad de dinero
      */
     public Dinero(BigDecimal cantidad) {
-        this(cantidad, "PEN");
+        this(cantidad, "CLP");
     }
     
     /**

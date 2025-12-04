@@ -7,7 +7,7 @@ import com.wallet.presentation.utils.ConsoleUtils;
 /**
  * Menú de gestión de cuentas.
  * 
- * @author Wallet Team
+ * @author Olimpo Team
  * @version 1.0.0
  */
 public class MenuCuentas {

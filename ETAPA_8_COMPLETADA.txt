@@ -250,17 +250,17 @@ DEMOSTRACIÓN DEL SISTEMA
    Validaciones: Usuario existe, no tiene cuenta previa
 
 3. Depositar Dinero
-   Input: Número cuenta, monto PEN 1000.00
+   Input: Número cuenta, monto CLP1000.00
    Output: Saldo actualizado, transacción registrada
    Validaciones: Monto positivo, cuenta activa
 
 4. Retirar Dinero
-   Input: Número cuenta, monto PEN 200.00
+   Input: Número cuenta, monto CLP200.00
    Output: Saldo actualizado, transacción registrada
    Validaciones: Saldo suficiente, monto positivo
 
 5. Transferir Entre Cuentas
-   Input: Cuenta origen, cuenta destino, PEN 300.00
+   Input: Cuenta origen, cuenta destino, CLP300.00
    Output: Saldos actualizados, 2 transacciones
    Validaciones: Ambas cuentas existen, saldo suficiente
 

@@ -526,7 +526,7 @@ public class ConsoleUtils {
     }
     
     public static String formatMoney(BigDecimal amount) {
-        return String.format("PEN %,.2f", amount);
+        return String.format("CLP%,.2f", amount);
     }
 }
 ```

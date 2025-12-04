@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 /**
  * Implementación en memoria del repositorio de transacciones.
  * 
- * @author Wallet Team
+ * @author Olimpo Team
  * @version 1.0.0
  */
 public class TransaccionRepositoryInMemory implements ITransaccionRepository {

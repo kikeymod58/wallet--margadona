@@ -14,7 +14,7 @@ import java.util.Optional;
 /**
  * Controlador para operaciones de cuentas.
  * 
- * @author Wallet Team
+ * @author Olimpo Team
  * @version 1.0.0
  */
 public class CuentaController {

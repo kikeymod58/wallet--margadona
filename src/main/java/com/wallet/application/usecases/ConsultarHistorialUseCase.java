@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 /**
  * Caso de uso para consultar el historial de transacciones de una cuenta.
  * 
- * @author Wallet Team
+ * @author Olimpo Team
  * @version 1.0.0
  */
 public class ConsultarHistorialUseCase {

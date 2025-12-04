@@ -7,7 +7,7 @@ import java.util.Scanner;
  * Utilidades para manejo de consola.
  * Proporciona métodos para lectura, validación y formateo de entrada/salida.
  * 
- * @author Wallet Team
+ * @author Olimpo Team
  * @version 1.0.0
  */
 public class ConsoleUtils {

@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 /**
  * Request DTO para transferir dinero entre cuentas.
  * 
- * @author Wallet Team
+ * @author Olimpo Team
  * @version 1.0.0
  */
 public class TransferirDineroRequest {

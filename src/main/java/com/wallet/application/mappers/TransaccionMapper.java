@@ -8,7 +8,7 @@ import com.wallet.domain.valueobjects.TipoTransaccion;
 /**
  * Mapper para convertir entre Transaccion (Entidad) y TransaccionDTO.
  * 
- * @author Wallet Team
+ * @author Olimpo Team
  * @version 1.0.0
  */
 public class TransaccionMapper {

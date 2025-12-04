@@ -9,7 +9,7 @@ import com.wallet.domain.valueobjects.Email;
  * Mapper para convertir entre Usuario (Entidad) y UsuarioDTO.
  * Implementa el patrón Mapper para separar capas.
  * 
- * @author Wallet Team
+ * @author Olimpo Team
  * @version 1.0.0
  */
 public class UsuarioMapper {

@@ -1,5 +1,6 @@
 package com.wallet.domain.valueobjects;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import static org.junit.jupiter.api.Assertions.*;
@@ -10,16 +11,18 @@ import static org.junit.jupiter.api.Assertions.*;
 class DineroTest {
     
     @Test
+    @DisplayName("Debería crear dinero con cantidad y moneda default")
     void deberiaCrearDineroConCantidadYMonedaDefault() {
         // Arrange & Act
         Dinero dinero = new Dinero(BigDecimal.valueOf(100));
         
         // Assert
         assertEquals(BigDecimal.valueOf(100.00).setScale(2), dinero.getCantidad());
-        assertEquals("PEN", dinero.getMoneda());
+        assertEquals("CLP", dinero.getMoneda());
     }
     
     @Test
+    @DisplayName("Debería crear dinero con cantidad y moneda")
     void deberiaCrearDineroConCantidadYMoneda() {
         // Arrange & Act
         Dinero dinero = new Dinero(BigDecimal.valueOf(50), "USD");
@@ -30,6 +33,7 @@ class DineroTest {
     }
     
     @Test
+    @DisplayName("Debería crear dinero desde double")
     void deberiaCrearDineroDesdeDouble() {
         // Arrange & Act
         Dinero dinero = Dinero.de(123.45);
@@ -39,6 +43,7 @@ class DineroTest {
     }
     
     @Test
+    @DisplayName("Debería crear dinero desde string")
     void deberiaCrearDineroDesdeString() {
         // Arrange & Act
         Dinero dinero = Dinero.de("99.99");
@@ -48,6 +53,7 @@ class DineroTest {
     }
     
     @Test
+    @DisplayName("Debería redondear a centavos")
     void deberiaRedondearACentavos() {
         // Arrange & Act
         Dinero dinero = Dinero.de(10.123);
@@ -57,6 +63,7 @@ class DineroTest {
     }
     
     @Test
+    @DisplayName("Debería sumar dos cantidades")
     void deberiaSumarDosCantidades() {
         // Arrange
         Dinero dinero1 = Dinero.de(100);
@@ -70,6 +77,7 @@ class DineroTest {
     }
     
     @Test
+    @DisplayName("Debería restar dos cantidades")
     void deberiaRestarDosCantidades() {
         // Arrange
         Dinero dinero1 = Dinero.de(100);
@@ -83,6 +91,7 @@ class DineroTest {
     }
     
     @Test
+    @DisplayName("Debería multiplicar por un factor")
     void deberiaMultiplicarPorFactor() {
         // Arrange
         Dinero dinero = Dinero.de(50);
@@ -95,6 +104,7 @@ class DineroTest {
     }
     
     @Test
+    @DisplayName("Debería comparar mayor que")
     void deberiaCompararMayorQue() {
         // Arrange
         Dinero mayor = Dinero.de(100);
@@ -106,6 +116,7 @@ class DineroTest {
     }
     
     @Test
+    @DisplayName("Debería comparar menor que")
     void deberiaCompararMenorQue() {
         // Arrange
         Dinero mayor = Dinero.de(100);
@@ -117,6 +128,7 @@ class DineroTest {
     }
     
     @Test
+    @DisplayName("Debería verificar si es positivo")
     void deberiaVerificarSiEsPositivo() {
         // Arrange
         Dinero positivo = Dinero.de(100);
@@ -130,6 +142,7 @@ class DineroTest {
     }
     
     @Test
+    @DisplayName("Debería verificar si es negativo")
     void deberiaVerificarSiEsNegativo() {
         // Arrange
         Dinero positivo = Dinero.de(100);
@@ -143,6 +156,7 @@ class DineroTest {
     }
     
     @Test
+    @DisplayName("Debería verificar si es cero")
     void deberiaVerificarSiEsCero() {
         // Arrange
         Dinero cero = Dinero.de(0);
@@ -154,23 +168,26 @@ class DineroTest {
     }
     
     @Test
+    @DisplayName("Debería lanzar excepción al operar con diferentes monedas")
     void deberiaLanzarExcepcionAlOperarDiferentesMonedas() {
         // Arrange
-        Dinero pen = new Dinero(BigDecimal.valueOf(100), "PEN");
+        Dinero clp= new Dinero(BigDecimal.valueOf(100), "CLP");
         Dinero usd = new Dinero(BigDecimal.valueOf(50), "USD");
         
         // Act & Assert
-        assertThrows(IllegalArgumentException.class, () -> pen.sumar(usd));
-        assertThrows(IllegalArgumentException.class, () -> pen.restar(usd));
+        assertThrows(IllegalArgumentException.class, () -> clp.sumar(usd));
+        assertThrows(IllegalArgumentException.class, () -> clp.restar(usd));
     }
     
     @Test
+    @DisplayName("Debería lanzar excepción si la cantidad es nula")
     void deberiaLanzarExcepcionSiCantidadEsNula() {
         // Arrange, Act & Assert
         assertThrows(IllegalArgumentException.class, () -> new Dinero(null));
     }
     
     @Test
+    @DisplayName("Debería lanzar excepción si la moneda es inválida")
     void deberiaLanzarExcepcionSiMonedaEsInvalida() {
         // Arrange, Act & Assert
         assertThrows(IllegalArgumentException.class, () -> 
@@ -182,6 +199,7 @@ class DineroTest {
     }
     
     @Test
+    @DisplayName("Debería ser igual si tienen mismo valor")
     void deberiaSerIgualSiTienenMismoValor() {
         // Arrange
         Dinero dinero1 = Dinero.de(100.00);
@@ -193,12 +211,13 @@ class DineroTest {
     }
     
     @Test
+    @DisplayName("Constante CERO debería existir")
     void constanteCeroDeberiaExistir() {
         // Arrange & Act
         Dinero cero = Dinero.CERO;
         
         // Assert
         assertTrue(cero.esCero());
-        assertEquals("PEN", cero.getMoneda());
+        assertEquals("CLP", cero.getMoneda());
     }
 }

@@ -60,7 +60,7 @@ class CrearCuentaUseCaseTest {
         assertNotNull(resultado);
         assertNotNull(resultado.getNumeroCuenta());
         assertEquals(new BigDecimal("0.00"), resultado.getSaldo());
-        assertEquals("PEN", resultado.getMoneda());
+        assertEquals("CLP", resultado.getMoneda());
         assertTrue(resultado.isActiva());
         
         verify(usuarioRepository).buscarPorId(usuario.getId());

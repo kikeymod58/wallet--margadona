@@ -15,7 +15,7 @@ import com.wallet.domain.valueobjects.Email;
  * - SRP: Responsabilidad única de crear usuarios
  * - DIP: Depende de abstracción (IUsuarioRepository)
  * 
- * @author Wallet Team
+ * @author Olimpo Team
  * @version 1.0.0
  */
 public class CrearUsuarioUseCase {

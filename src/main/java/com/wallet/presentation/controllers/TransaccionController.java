@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Controlador para operaciones de transacciones.
  * 
- * @author Wallet Team
+ * @author Olimpo Team
  * @version 1.0.0
  */
 public class TransaccionController {

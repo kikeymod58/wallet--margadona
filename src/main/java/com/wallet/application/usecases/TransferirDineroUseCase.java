@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * Caso de uso para transferir dinero entre cuentas.
  * 
- * @author Wallet Team
+ * @author Olimpo Team
  * @version 1.0.0
  */
 public class TransferirDineroUseCase {

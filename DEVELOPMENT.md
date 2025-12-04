@@ -76,7 +76,7 @@ public void ejecutar() { }
 public Usuario buscarPorId(String id) { }
 
 // Constantes: UPPER_SNAKE_CASE
-public static final String MONEDA_DEFAULT = "PEN";
+public static final String MONEDA_DEFAULT = "CLP";
 public static final int MAX_LONGITUD_NOMBRE = 100;
 
 // Paquetes: minúsculas

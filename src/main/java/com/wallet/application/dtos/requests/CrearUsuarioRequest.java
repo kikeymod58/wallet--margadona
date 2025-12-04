@@ -3,7 +3,7 @@ package com.wallet.application.dtos.requests;
 /**
  * Request DTO para crear un nuevo usuario.
  * 
- * @author Wallet Team
+ * @author Olimpo Team
  * @version 1.0.0
  */
 public class CrearUsuarioRequest {

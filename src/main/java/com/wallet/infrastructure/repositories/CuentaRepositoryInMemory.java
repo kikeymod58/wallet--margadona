@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 /**
  * Implementación en memoria del repositorio de cuentas.
  * 
- * @author Wallet Team
+ * @author Olimpo Team
  * @version 1.0.0
  */
 public class CuentaRepositoryInMemory implements ICuentaRepository {

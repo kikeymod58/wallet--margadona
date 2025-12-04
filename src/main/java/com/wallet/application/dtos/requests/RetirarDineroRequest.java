@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 /**
  * Request DTO para retirar dinero de una cuenta.
  * 
- * @author Wallet Team
+ * @author Olimpo Team
  * @version 1.0.0
  */
 public class RetirarDineroRequest {

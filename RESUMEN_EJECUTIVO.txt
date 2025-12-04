@@ -316,27 +316,27 @@ REQUISITOS:
    │                                                │
    │ ✓ Cuenta creada exitosamente                  │
    │ Número: 1234567890                             │
-   │ Saldo: PEN 0.00                                │
+   │ Saldo: CLP0.00                                │
    └────────────────────────────────────────────────┘
 
 3. DEPOSITAR
    ┌────────────────────────────────────────────────┐
    │ Cuenta: 1234567890                             │
-   │ Monto: PEN 1000.00                             │
+   │ Monto: CLP1000.00                             │
    │                                                │
    │ ✓ Depósito realizado                          │
-   │ Nuevo saldo: PEN 1000.00                       │
+   │ Nuevo saldo: CLP1000.00                       │
    └────────────────────────────────────────────────┘
 
 4. TRANSFERIR
    ┌────────────────────────────────────────────────┐
    │ Origen: 1234567890                             │
    │ Destino: 9876543210                            │
-   │ Monto: PEN 300.00                              │
+   │ Monto: CLP300.00                              │
    │                                                │
    │ ✓ Transferencia exitosa                       │
-   │ Saldo origen: PEN 700.00                       │
-   │ Saldo destino: PEN 300.00                      │
+   │ Saldo origen: CLP700.00                       │
+   │ Saldo destino: CLP300.00                      │
    └────────────────────────────────────────────────┘
 
 

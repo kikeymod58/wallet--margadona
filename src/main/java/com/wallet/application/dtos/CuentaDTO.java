@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 /**
  * DTO para transferencia de datos de Cuenta.
  * 
- * @author Wallet Team
+ * @author Olimpo Team
  * @version 1.0.0
  */
 public class CuentaDTO {

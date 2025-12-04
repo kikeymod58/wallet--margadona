@@ -10,7 +10,7 @@ import com.wallet.domain.valueobjects.Email;
 /**
  * Caso de uso para buscar usuarios.
  * 
- * @author Wallet Team
+ * @author Olimpo Team
  * @version 1.0.0
  */
 public class BuscarUsuarioUseCase {

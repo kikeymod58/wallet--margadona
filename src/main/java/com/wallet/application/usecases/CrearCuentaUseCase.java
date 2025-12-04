@@ -11,7 +11,7 @@ import com.wallet.domain.repositories.IUsuarioRepository;
 /**
  * Caso de uso para crear una nueva cuenta bancaria.
  * 
- * @author Wallet Team
+ * @author Olimpo Team
  * @version 1.0.0
  */
 public class CrearCuentaUseCase {

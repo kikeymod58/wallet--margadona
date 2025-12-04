@@ -91,7 +91,7 @@ CORRECCIONES REALIZADAS
 7. ✓ Corregido imports de TipoDocumento
 8. ✓ Ajustado getDocumento() → getDocumentoIdentidad()
 9. ✓ Corregido tipo de excepción esperada (IllegalStateException)
-10. ✓ Ajustado expectativas de saldo y moneda (PEN en lugar de USD)
+10. ✓ Ajustado expectativas de saldo y moneda (CLP en lugar de USD)
 11. ✓ Corregido conteo de transacciones en historial
 
 

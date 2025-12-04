@@ -6,7 +6,7 @@ import com.wallet.presentation.menus.MenuPrincipal;
  * Clase principal de la aplicación Wallet.
  * Punto de entrada del sistema de billetera digital.
  * 
- * @author Wallet Team
+ * @author Olimpo Team
  * @version 1.0.0
  */
 public class Main {

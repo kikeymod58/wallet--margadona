@@ -108,7 +108,7 @@ El proyecto implementa **Clean Architecture** con 4 capas bien definidas:
 ### 1. Clonar el repositorio
 
 ```powershell
-git clone <repository-url>
+git clone https://github.com/margandona/wallet.git
 cd wallet
 ```
 
@@ -259,7 +259,9 @@ wallet/
 │       ├── domain/                    # Tests de dominio (52)
 │       ├── application/               # Tests de use cases (14)
 │       └── infrastructure/            # Tests de infra (19)
-├── lib/                               # Dependencias (JARs)
+├── .github/ # Configuración de GitHub Actions
+│   └── workflows/ # Workflows de CI/CD
+├── lib/ # Dependencias (JARs)
 │   ├── junit-platform-console-standalone-1.10.1.jar
 │   ├── mockito-core-5.8.0.jar
 │   ├── byte-buddy-1.14.11.jar
@@ -278,6 +280,35 @@ wallet/
 ---
 
 ## 📚 Documentación
+
+### API Generada (Javadoc)
+
+La documentación técnica del código fuente está disponible en línea:
+
+👉 [Explorar documentación en línea](https://kikeymod58.github.io/wallet--margadona/)
+
+[![Javadoc](https://img.shields.io/badge/docs-Javadoc-green?logo=java&logoColor=white)](https://kikeymod58.github.io/wallet--margadona/)
+
+#### Generar Javadoc localmente (opcional)
+
+Si deseas generar la documentación en tu máquina:
+
+##### Opción 1: Con JDK (recomendado)
+Asegúrate de tener **JDK 21+** instalado y ejecuta en powershell:
+
+```powershell
+javadoc -d docs -sourcepath src/main/java -subpackages com.wallet -encoding UTF-8
+```
+Luego abre docs/index.html en tu navegador.
+
+##### Opción 2: Con Maven (si lo tienes instalado)
+
+```powershell
+mvn javadoc:javadoc
+```
+La Javadoc se generará en target/reports/apidocs/index.html.
+
+---
 
 ### Documentos Disponibles
 

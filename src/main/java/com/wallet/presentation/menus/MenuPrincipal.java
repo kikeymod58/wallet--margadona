@@ -8,7 +8,7 @@ import com.wallet.infrastructure.services.*;
  * Menú principal de la aplicación.
  * Punto de entrada de la interfaz de usuario.
  * 
- * @author Wallet Team
+ * @author Olimpo Team
  * @version 1.0.0
  */
 public class MenuPrincipal {

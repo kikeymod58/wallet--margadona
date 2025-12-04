@@ -9,7 +9,7 @@ import com.wallet.domain.repositories.ICuentaRepository;
 /**
  * Caso de uso para consultar el saldo de una cuenta.
  * 
- * @author Wallet Team
+ * @author Olimpo Team
  * @version 1.0.0
  */
 public class ConsultarSaldoUseCase {

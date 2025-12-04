@@ -13,7 +13,7 @@ import com.wallet.domain.valueobjects.Dinero;
 /**
  * Caso de uso para retirar dinero de una cuenta.
  * 
- * @author Wallet Team
+ * @author Olimpo Team
  * @version 1.0.0
  */
 public class RetirarDineroUseCase {

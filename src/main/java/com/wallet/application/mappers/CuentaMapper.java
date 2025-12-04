@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 /**
  * Mapper para convertir entre Cuenta (Entidad) y CuentaDTO.
  * 
- * @author Wallet Team
+ * @author Olimpo Team
  * @version 1.0.0
  */
 public class CuentaMapper {
