@@ -259,9 +259,9 @@ wallet/
 │       ├── domain/                    # Tests de dominio (52)
 │       ├── application/               # Tests de use cases (14)
 │       └── infrastructure/            # Tests de infra (19)
-├── .github/ # Configuración de GitHub Actions
-│   └── workflows/ # Workflows de CI/CD
-├── lib/ # Dependencias (JARs)
+├── .github/                           # Configuración de GitHub Actions
+│   └── workflows/                     # Workflows de CI/CD
+├── lib/                               # Dependencias (JARs)
 │   ├── junit-platform-console-standalone-1.10.1.jar
 │   ├── mockito-core-5.8.0.jar
 │   ├── byte-buddy-1.14.11.jar
