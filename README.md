@@ -59,12 +59,12 @@ El proyecto implementa **Clean Architecture** con 4 capas bien definidas:
 ```
 ┌─────────────────────────────────────────────────────┐
 │               PRESENTATION LAYER                    │
-│  (Console UI, Controllers, Menus, Utils)           │
+│  (Console UI, Controllers, Menus, Utils)            │
 └─────────────────────────────────────────────────────┘
                         ↓
 ┌─────────────────────────────────────────────────────┐
 │              APPLICATION LAYER                      │
-│  (Use Cases, DTOs, Mappers, Requests/Responses)    │
+│  (Use Cases, DTOs, Mappers, Requests/Responses)     │
 └─────────────────────────────────────────────────────┘
                         ↓
 ┌─────────────────────────────────────────────────────┐
@@ -74,7 +74,7 @@ El proyecto implementa **Clean Architecture** con 4 capas bien definidas:
                         ↓
 ┌─────────────────────────────────────────────────────┐
 │                 DOMAIN LAYER                        │
-│  (Entities, Value Objects, Exceptions, Interfaces) │
+│  (Entities, Value Objects, Exceptions, Interfaces)  │
 └─────────────────────────────────────────────────────┘
 ```
 
