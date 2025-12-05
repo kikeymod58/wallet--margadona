@@ -421,14 +421,23 @@ Este proyecto es de código abierto y está disponible bajo la licencia MIT.
 
 ---
 
-## 👨‍💻 Autor
+## 👨‍💻 Autores
 
-Desarrollado como proyecto educativo para demostrar:
-- Principios SOLID
-- Clean Architecture
-- Patrones de Diseño
-- Test Driven Development
-- Buenas prácticas de Java
+Desarrollado como proyecto educativo por el **Team Olimpo**:
+
+- **Enrique Armijo Pérez**  
+- **Karla Lobos Manzo**  
+- **Marcos Argandoña Ugarte**  
+- **Jorge Ferrada Fernández**  
+- **Claudio Padilla Leal**
+
+Este proyecto demuestra la aplicación integral de:
+
+- Principios SOLID  
+- Clean Architecture  
+- Patrones de Diseño  
+- Test Driven Development (TDD)  
+- Buenas prácticas de desarrollo en Java
 
 ---
 
